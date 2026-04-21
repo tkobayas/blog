@@ -1,0 +1,32 @@
+title: Toshiya Kobayashi — Blog
+description: Notes on language design, rule engines, and AI-assisted development.
+author: Toshiya Kobayashi
+
+url: "https://tkobayas.github.io"
+baseurl: "/blog"
+
+theme: minima
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+permalink: /:year/:month/:day/:title/
+
+defaults:
+  - scope:
+      path: ""
+      type: posts
+    values:
+      layout: post
+
+minima:
+  skin: auto
+  social_links:
+    - { platform: github, user_url: "https://github.com/tkobayas" }
+
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
