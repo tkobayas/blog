@@ -30,8 +30,8 @@ proto schema as octal-escaped bytes. Hand-editing the descriptor bytes
 to add one enum value means recomputing a chain of varint lengths.
 Wrong.
 
-I flagged this to Mark. Three options — install protoc, hand-edit the
-bytes, or defer proto support. Mark suggested a fourth:
+Claude flagged this. Three options — install protoc, hand-edit the
+bytes, or defer proto support. I suggested a fourth:
 `protobuf-maven-plugin`. Same shape as the `antlr4-maven-plugin`
 already in the pom — downloads the protoc binary from Maven Central,
 regenerates on every compile, no system dependency. The generated
@@ -150,11 +150,11 @@ nothing.
 The proto-plugin migration was the right call, and doing it as a
 separate commit before the EXISTS feature was the right shape.
 What I'd change: flag the "is this build-system prerequisite
-installed" question earlier in the plan, before the plan is
-approved. I caught the protoc issue during planning; I almost caught
-it at the start of brainstorming. Earlier is better — the user has
-local context (like "we can use protobuf-maven-plugin") that would
-have shaped the plan from the start instead of mid-flight.
+installed" question earlier — before the plan is approved. Claude
+caught the protoc issue during planning; it almost slipped past the
+brainstorming step entirely. Earlier is better — I have local context
+(like "we can use protobuf-maven-plugin") that would have shaped the
+plan from the start instead of mid-flight.
 
 The stale `.tokens` gotcha is the kind of thing you only catch once.
 Next time I touch the lexer I'll blow away any loose `.tokens` files
