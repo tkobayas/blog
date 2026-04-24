@@ -68,22 +68,6 @@ retention_100_events.json (HA-PG) (failover-recovery), 3000000, 50
 
 The bash/Java contract — three CSV fields split on comma — stays intact. `fmt_parse_metrics`'s `grep "^${file}"` matches both load and recovery lines without modification.
 
-## Recovery is cheaper than you'd think
-
-Smoke output from the three sizes:
-
-```
-Size     Load(ms)   Recovery(ms)    Ratio
-------------------------------------------
-100          2649            196     7.4%
-500         39937            464     1.2%
-1k         148718            797     0.5%
-```
-
-Load scales linearly with events — roughly 150ms per event at 1k. The 2-condition join means each insert references a growing partial-match set. Recovery doesn't follow: 196ms → 464ms → 797ms for the same 10× growth in event count that took load from 2.6s to 149s.
-
-The ratio drops because recovery is bounded by "read the accumulated state once" while load pays the per-event write cost. A bigger state does add to recovery time, but not linearly with event count.
-
 ## Two smaller things
 
 While adding the new once_within files, I switched `PayloadGenerator` to emit pretty-printed JSON globally. The existing 13 files got reformatted in the same pass. To prove the reformat was semantically zero-op I ran each file through `json.dumps(..., sort_keys=True)` before and after, diffed the canonical forms, got empty output. 16 files, byte-different on disk, semantically identical.
