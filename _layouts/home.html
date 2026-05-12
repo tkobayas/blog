@@ -1,0 +1,62 @@
+---
+layout: default
+---
+
+<div class="home">
+  {%- if page.title -%}
+    <h1 class="page-heading">{{ page.title }}</h1>
+  {%- endif -%}
+
+  {{ content }}
+
+  {%- assign all_projects = "" | split: "" -%}
+  {%- for post in site.posts -%}
+    {%- for project in post.projects -%}
+      {%- unless all_projects contains project -%}
+        {%- assign all_projects = all_projects | push: project -%}
+      {%- endunless -%}
+    {%- endfor -%}
+  {%- endfor -%}
+  {%- assign all_projects = all_projects | sort -%}
+
+  {%- if all_projects.size > 0 -%}
+    <h2 class="post-list-heading">Projects</h2>
+    <ul class="post-list">
+      {%- for project in all_projects -%}
+        {%- assign project_posts = site.posts | where_exp: "post", "post.projects contains project" -%}
+        <li>
+          <a href="{{ '/projects/' | append: project | append: '/' | relative_url }}">{{ project }}</a>
+          <span class="post-meta">({{ project_posts.size }} post{% if project_posts.size != 1 %}s{% endif %})</span>
+        </li>
+      {%- endfor -%}
+    </ul>
+  {%- endif -%}
+
+  {%- if site.posts.size > 0 -%}
+    <h2 class="post-list-heading">{{ page.list_title | default: "Posts" }}</h2>
+    <ul class="post-list">
+      {%- for post in site.posts -%}
+      <li>
+        <span class="post-meta">{{ post.date | date: site.minima.date_format | default: "%b %-d, %Y" }}</span>
+        <h3>
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+        </h3>
+        {%- if post.projects -%}
+          <p class="post-meta">
+            {%- for project in post.projects -%}
+              <a href="{{ '/projects/' | append: project | append: '/' | relative_url }}">{{ project }}</a>{%- unless forloop.last %}, {% endunless -%}
+            {%- endfor -%}
+          </p>
+        {%- endif -%}
+      </li>
+      {%- endfor -%}
+    </ul>
+
+    <p class="feed-subscribe">
+      <a href="{{ "/feed.xml" | relative_url }}">Subscribe</a>
+    </p>
+  {%- endif -%}
+
+</div>

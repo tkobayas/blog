@@ -1,0 +1,31 @@
+---
+layout: default
+---
+
+<div class="home">
+  <h1 class="page-heading">{{ page.project }}</h1>
+
+  {{ content }}
+
+  {%- assign project_posts = site.posts | where_exp: "post", "post.projects contains page.project" -%}
+
+  {%- if project_posts.size > 0 -%}
+    <h2 class="post-list-heading">Posts ({{ project_posts.size }})</h2>
+    <ul class="post-list">
+      {%- for post in project_posts -%}
+      <li>
+        <span class="post-meta">{{ post.date | date: site.minima.date_format | default: "%b %-d, %Y" }}</span>
+        <h3>
+          <a class="post-link" href="{{ post.url | relative_url }}">
+            {{ post.title | escape }}
+          </a>
+        </h3>
+      </li>
+      {%- endfor -%}
+    </ul>
+  {%- else -%}
+    <p>No posts yet for this project.</p>
+  {%- endif -%}
+
+  <p><a href="{{ '/' | relative_url }}">← All posts</a></p>
+</div>
